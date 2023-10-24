@@ -1,4 +1,4 @@
-class Recta:
+class Parabola:
     def __init__(self, a: float, b: float, c: float):
         self.a = a
         self.b = b
@@ -10,10 +10,10 @@ class Recta:
         if self.c > 0:
             self.c = f"+{self.c}"
 
-        return f"{self.a}x{self.b}y{self.c}=0"
+        return f"{self.a}x²{self.b}y{self.c}=0"
 
 
 # Ejemplo
-recta1 = Recta(2, -4, 8)
+parabola1 = Parabola(-2, 6, -2)
 
-print(recta1)
+print(parabola1)

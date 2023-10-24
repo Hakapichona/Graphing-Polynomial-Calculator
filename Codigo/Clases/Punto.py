@@ -7,6 +7,6 @@ class Punto:
         return f"({self.x},{self.y})"
 
 
-
-
-
+# Ejemplo
+punto1 = Punto(-2, 4)
+print(punto1)
