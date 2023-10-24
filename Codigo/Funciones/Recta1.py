@@ -12,14 +12,34 @@ def Recta1(puntoA: Punto, puntoB: Punto):
     if termino_independiente % 1 == 0:
         termino_independiente = int(termino_independiente)
 
-    if m >= 0:
-        return f"{m}x - y + {termino_independiente} = 0"
-    else:
-        return f"{-1*m}x + y - {termino_independiente} = 0"
 
-
-
-
-
-ecuacion = Recta1(Punto(1,2),Punto(-3,4/5))
-print(ecuacion)
+    if m > 0:
+        if m == 1:
+            if termino_independiente == 0:
+                return f"x - y = 0"
+            else:
+                return f"x - y + {termino_independiente} = 0"
+        else:
+            if termino_independiente == 0:
+                return f"{m}x - y = 0"
+            else:
+                return f"{m}x - y + {termino_independiente} = 0"
+    elif m < 0:
+        if m == -1:
+            if termino_independiente == 0:
+                return f"- x + y = 0"
+            else:
+                return f"- x + y - {termino_independiente} = 0"
+        else:
+            if termino_independiente == 0:
+                return f"{-1*m}x + y = 0"
+            else:
+                if termino_independiente > 0:
+                    return f"{-1*m}x + y - {termino_independiente} = 0"
+                else:
+                    return f"{-1 * m}x + y + {-1*termino_independiente} = 0"
+    elif m == 0:
+        if termino_independiente == 0:
+            return f"y = 0"
+        else:
+            return f"y - {termino_independiente} = 0"
