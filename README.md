@@ -1,4 +1,4 @@
-Proyecto de segunda parcial de Estructura de datos y Algoritmos II
+# Proyecto de segunda parcial de Estructura de datos y Algoritmos II
 
 # Integrantes
 - Matias Benitez
