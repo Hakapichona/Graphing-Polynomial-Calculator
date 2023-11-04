@@ -18,8 +18,6 @@ class Circunferencia:
 
         return f"x²+y²{self.a}x{self.b}y{self.c}=0"
 
-
-#Ejemplo
-cia1 = Circunferencia(4, 9, -1)
-
-print(cia1)
+# Ejemplo
+# cia1 = Circunferencia(4, 9, -1)
+# print(cia1)
