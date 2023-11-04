@@ -8,5 +8,5 @@ class Punto:
 
 
 # Ejemplo
-punto1 = Punto(-2, 4)
-print(punto1)
+# punto1 = Punto(-2, 4)
+# print(punto1)
