@@ -50,5 +50,5 @@ def Recta1(puntoA: Punto, puntoB: Punto):
         else:
             return f"y-{termino_independiente}=0"
 
-ecuacion = Recta1(Punto(0,0),Punto(0,1))
-print(ecuacion)
+#ecuacion = Recta1(Punto(0,0),Punto(0,1))
+#print(ecuacion)

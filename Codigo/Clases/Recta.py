@@ -12,8 +12,12 @@ class Recta:
 
         return f"{self.a}x{self.b}y{self.c}=0"
 
+    def Pendiente(self):
+        pendiente = -(self.b / self.a)
+        if pendiente % 1 == 0:
+            return int(pendiente)
+        return pendiente
 
 # Ejemplo
-recta1 = Recta(2, -4, 8)
-
-print(recta1)
+# recta1 = Recta(4, 1, 8)
+# print(recta1)
