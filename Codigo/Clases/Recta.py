@@ -13,7 +13,7 @@ class Recta:
         return f"{self.a}x{self.b}y{self.c}=0"
 
     def Pendiente(self):
-        pendiente = -(self.b / self.a)
+        pendiente = -(self.a / self.b)
         if pendiente % 1 == 0:
             return int(pendiente)
         return pendiente
