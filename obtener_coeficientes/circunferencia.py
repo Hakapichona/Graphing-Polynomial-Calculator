@@ -25,15 +25,11 @@ def crear_circunferencia():
 
     ec = ec.split('+')
 
-    i = 4
-
     for termino in ec:
 
         if '-' in termino:
 
             termino = termino.split('-')
-
-            i = i + 1
 
             coeficientes.append(termino[0])
 
