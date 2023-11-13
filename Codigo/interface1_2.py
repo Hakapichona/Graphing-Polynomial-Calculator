@@ -1,8 +1,18 @@
+# Importaciones necesarias
+
+# Librerias
 from tkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib import pyplot as plt
 from math import *
 from time import *
+
+# Clases y Funciones locales
+from Codigo.Clases.Punto import Punto
+from Codigo.Clases.Recta import Recta
+from Codigo.Funciones.Punto_Medio import PuntoMedio
+from Codigo.Funciones.Distancia_entre_A_y_B import distanciaAB
+
 ventana = Tk()
 ventana.title("GeoAlgebra")
 ventana.config(background="black")
@@ -60,6 +70,8 @@ def eleccion(event):
         fig.clear()
         plt.close("all")
         ventana.destroy()
+
+
 def menuPrincipal():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -143,7 +155,8 @@ def menuPrincipal():
     optionL.bind("<Button-1>", lambda event: menuL())
     optionX.bind("<Button-1>", lambda event: exit())
     ventana.bind("<Key>", eleccion)
-    # entradaPrincipal.grid(padx=8, row=16, column=2, sticky=W)
+
+
 def menuClear():
     principalMenu.grid_remove()
     principalMenu1.grid_remove()
@@ -174,34 +187,40 @@ def graficarA():
     plt.grid(True)
     cad1 = entrada1.get()
     cad2 = entrada2.get()
+
+    # Elimina cualquier espacio
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x1 = float(cad1[0:cad1.find(",")])
-    y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
+
+    # Creacion del primer punto
+    Punto1 = Punto(float(cad1[0:cad1.find(",")]), float(cad1[cad1.find(",") + 1:len(cad1)]))
+
+    # Creacion del segundo punto
+    Punto2 = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+
+    # Punto medio mediante la funcion Punto-medio
+    punto_medio = PuntoMedio(Punto1, Punto2)
+
     x = []
     y = []
-    mx = (x1 + x2) / 2
-    my = (y1 + y2) / 2
-    x.append(x1)
-    x.append(mx)
-    x.append(x2)
-    y.append(y1)
-    y.append(my)
-    y.append(y2)
-    d = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** (1 / 2)
+
+    x.extend([Punto1.x, punto_medio.x, Punto2.x])
+    y.extend([Punto1.y, punto_medio.y, Punto2.y])
+
+    d = distanciaAB(Punto1, Punto2)
     # d1 = (mx ** 2 + my ** 2) ** (1 / 2)
     plt.plot(x, y, 'g')
     plt.plot(x, y, 'rx')
-    plt.xlim(mx - d, mx + d)
-    plt.ylim(my - d, my + d)
+    plt.xlim(punto_medio.x - d, punto_medio.x + d)
+    plt.ylim(punto_medio.y - d, punto_medio.y + d)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarB():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -213,37 +232,41 @@ def graficarB():
     plt.grid(True)
     cad1 = entrada1.get()
     cad2 = entrada2.get()
+
+    # Elimina cualquier espacio
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x1 = float(cad1[0:cad1.find(",")])
-    y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
+
+    # Creacion del primer punto
+    Punto1 = Punto(float(cad1[0:cad1.find(",")]), float(cad1[cad1.find(",") + 1:len(cad1)]))
+
+    # Creacion del segundo punto
+    Punto2 = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+
+    # Punto medio mediante la funcion Punto-medio
+    punto_medio = PuntoMedio(Punto1, Punto2)
+
     x = []
     y = []
-    mx = (x1 + x2) / 2
-    my = (y1 + y2) / 2
-    # m = (y1 - y2) / (x1 - x2)
-    """for i in range(-720, 720):
-        x.append(i)
-        y.append((m*i)-(m*x1)+y1)"""
-    d = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** (1 / 2)
-    # d1 = (mx ** 2 + my ** 2) ** (1 / 2)
-    x.append(x1)
-    x.append(x2)
-    y.append(y1)
-    y.append(y2)
+
+    x.extend([Punto1.x, punto_medio.x, Punto2.x])
+    y.extend([Punto1.y, punto_medio.y, Punto2.y])
+
+    d = distanciaAB(Punto1, Punto2)
+
     plt.plot(x, y, 'g:')
-    plt.plot(x1, y1, 'rx')
-    plt.plot(x2, y2, 'rx')
-    plt.xlim(mx - d, mx + d)
-    plt.ylim(my - d, my + d)
+    plt.plot(Punto1.x, Punto1.y, 'rx')
+    plt.plot(Punto2.x, Punto2.y, 'rx')
+    plt.xlim(punto_medio.x - d, punto_medio.x + d)
+    plt.ylim(punto_medio.y - d, punto_medio.y + d)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarC():  # Problemas pendientes
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -255,43 +278,56 @@ def graficarC():  # Problemas pendientes
     plt.grid(True)
     cad1 = entrada1.get()  # recta
     cad2 = entrada2.get()  # punto
+
+    # Elimina signos y espacios
     if cad1.count("+") != 0:
         cad1 = cad1.replace("+", "")
     if cad1.count(" ") != 0:
         cad1 = cad1.replace(" ", "")
-    a = float(cad1[0:cad1.find("x")])
-    b = float(cad1[cad1.find("x") + 1:cad1.find("y")])
-    c = float(cad1[cad1.find("y") + 1:cad1.find("=")])
+
+    recta = Recta(
+        float(cad1[0:cad1.find("x")]),
+        float(cad1[cad1.find("x") + 1:cad1.find("y")]),
+        float(cad1[cad1.find("y") + 1:cad1.find("=")])
+    )
+
     x = []
     y = []
+
     for i in range(-720, 720):
         x.append(i)
-        y.append(-(a * i + c) / b)
+        y.append(-(recta.a * i + recta.c) / recta.b)
+
     plt.plot(x, y, 'g')  # recta
+
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
+
+    punto = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+
     x = []
     y = []
-    angulo = float(atan(b / a))
-    distancia = float((abs(x2 * a + y2 * b + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
-    px = float(x2 + (cos(angulo) * distancia))
-    py = float(y2 + (sin(angulo) * distancia))
-    x.append(x2)
-    x.append(px)
-    y.append(y2)
-    y.append(py)
-    plt.plot(x2, y2, 'rx')
-    # 3x+4y+5=0
-    plt.xlim((x2 - (distancia * 6)) - (0.9 * distancia), (x2 + (distancia * 6) + (0.5 * distancia)))
-    plt.ylim(y2 - (distancia * 6), y2 + (distancia * 6))    # mejor
-    """plt.xlim(x2 - (distancia * 8), x2 + (distancia * 8))
-    plt.ylim(y2 - (distancia * 8), y2 + (distancia * 8))"""
+
+    angulo = float(atan(recta.b / recta.a))
+    distancia = float(
+        (abs(punto.x * recta.a + punto.y * recta.b + recta.c)) / ((recta.a ** 2 + recta.b ** 2) ** (1 / 2))
+    )
+
+    px = float(punto.x + (cos(angulo) * distancia))
+    py = float(punto.y + (sin(angulo) * distancia))
+
+    x.extend([punto.x, px])
+    y.extend([punto.y, py])
+
+    plt.plot(punto.x, punto.y, 'rx')
+    plt.xlim((punto.x - (distancia * 6)) - (0.9 * distancia), (punto.x + (distancia * 6) + (0.5 * distancia)))
+    plt.ylim(punto.y - (distancia * 6), punto.y + (distancia * 6))  # mejor
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarD():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -303,27 +339,34 @@ def graficarD():
     plt.grid(True)
     cad1 = entrada1.get()
     cad2 = entrada2.get()
+
+    #Elimina espacios en blanco
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x1 = float(cad1[0:cad1.find(",")])
-    y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
+
+    punto = Punto(float(cad1[0:cad1.find(",")]), float(cad1[cad1.find(",") + 1:len(cad1)]))
+
     x = []
     y = []
     m = float(cad2)
+
     for i in range(-720, 720):
         x.append(i)
-        y.append((m * i) - (m * x1) + y1)
-    d1 = ((x1 ** 2 + y1 ** 2) ** 1 / 2) + 10
+        y.append((m * i) - (m * punto.x) + punto.y)
+
+    d1 = ((punto.x ** 2 + punto.y ** 2) ** 1 / 2) + 10
     plt.plot(x, y, 'g')
-    plt.plot(x1, y1, 'rx')
-    plt.xlim(x1 - d1, x1 + d1)
-    plt.ylim(y1 - d1, y1 + d1)
+    plt.plot(punto.x, punto.y, 'rx')
+    plt.xlim(punto.x - d1, punto.x + d1)
+    plt.ylim(punto.y - d1, punto.y + d1)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarE():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -335,33 +378,36 @@ def graficarE():
     plt.grid(True)
     cad1 = entrada1.get()
     cad2 = entrada2.get()
+
+    #Elimina los espacios en blanco
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x1 = float(cad1[0:cad1.find(",")])
-    y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
+
+    punto1 = Punto(float(cad1[0:cad1.find(",")]), float(cad1[cad1.find(",") + 1:len(cad1)]))
+    punto2 = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+
     x = []
     y = []
-    mx = (x1 + x2) / 2
-    my = (y1 + y2) / 2
-    m = (y1 - y2) / (x1 - x2)
+
+    puntoMedio = PuntoMedio(punto1, punto2)
+    m = (punto1.y - punto2.y) / (punto1.x - punto2.x)
     for i in range(-720, 720):
         x.append(i)
-        y.append((m * i) - (m * x1) + y1)
-    d = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 1 / 2
-    # d1 = (mx ** 2 + my ** 2) ** 1 / 2
+        y.append((m * i) - (m * punto1.x) + punto1.y)
+    d = distanciaAB(punto1, punto2)
     plt.plot(x, y, 'g')
-    plt.plot(x1, y1, 'rx')
-    plt.plot(x2, y2, 'rx')
-    plt.xlim(mx - d, mx + d)
-    plt.ylim(my - d, my + d)
+    plt.plot(punto1.x, punto1.y, 'rx')
+    plt.plot(punto2.x, punto2.y, 'rx')
+    plt.xlim(puntoMedio.x - d, puntoMedio.x + d)
+    plt.ylim(puntoMedio.y - d, puntoMedio.y + d)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarF():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -373,42 +419,49 @@ def graficarF():
     plt.grid(True)
     cad1 = entrada1.get()  # recta
     cad2 = entrada2.get()  # punto
+
+    #Elimina espacios y signos
     if cad1.count("+") != 0:
         cad1 = cad1.replace("+", "")
     if cad1.count(" ") != 0:
         cad1 = cad1.replace(" ", "")
-    a = float(cad1[0:cad1.find("x")])
-    b = float(cad1[cad1.find("x") + 1:cad1.find("y")])
-    c = float(cad1[cad1.find("y") + 1:cad1.find("=")])
+
+    recta = Recta(
+        float(cad1[0:cad1.find("x")]),
+        float(cad1[cad1.find("x") + 1:cad1.find("y")]),
+        float(cad1[cad1.find("y") + 1:cad1.find("=")])
+    )
+
     x = []
     y = []
     for i in range(-720, 720):
         x.append(i)
-        y.append(-(a * i + c) / b)
+        y.append(-(recta.a * i + recta.c) / recta.b)
     plt.plot(x, y, 'g')  # recta
 
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
-    distancia = float((abs(x2 * a + y2 * b + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
-    plt.plot(x2, y2, 'rx')
+
+    punto = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+
+    distancia = float((abs(punto.x * recta.a + punto.y * recta.b + recta.c)) / ((recta.a ** 2 + recta.b ** 2) ** (1 / 2)))
+    plt.plot(punto.x, punto.y, 'rx')
 
     x = []
     y = []
-    m = float(-a / b)
     for i in range(-720, 720):
         x.append(i)
-        y.append((m * i) - (m * x2) + y2)
+        y.append((recta.Pendiente() * i) - (recta.Pendiente() * punto.x) + punto.y)
     plt.plot(x, y, 'g')  # recta
 
-    # 3x+4y+5=0
-    plt.xlim(x2 - (distancia * 8), x2 + (distancia * 8))
-    plt.ylim(y2 - (distancia * 8), y2 + (distancia * 8))
+    plt.xlim(punto.x - (distancia * 8), punto.x + (distancia * 8))
+    plt.ylim(punto.y - (distancia * 8), punto.y + (distancia * 8))
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarG():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -420,15 +473,22 @@ def graficarG():
     plt.grid(True)
     cad1 = entrada1.get()  # recta
     cad2 = entrada2.get()  # punto
+
+    #Elimina espacios y signos
     if cad1.count("+") != 0:
         cad1 = cad1.replace("+", "")
     if cad1.count(" ") != 0:
         cad1 = cad1.replace(" ", "")
-    a = float(cad1[0:cad1.find("x")])
-    b = float(cad1[cad1.find("x") + 1:cad1.find("y")])
-    c = float(cad1[cad1.find("y") + 1:cad1.find("=")])
+
+    recta = Recta(
+        float(cad1[0:cad1.find("x")]),
+        float(cad1[cad1.find("x") + 1:cad1.find("y")]),
+        float(cad1[cad1.find("y") + 1:cad1.find("=")])
+    )
+
     x = []
     y = []
+
     for i in range(-720, 720):
         x.append(i)
         y.append(-(a * i + c) / b)
@@ -436,8 +496,9 @@ def graficarG():
 
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
+
+    punto = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+
     distancia = float((abs(x2 * a + y2 * b + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
     plt.plot(x2, y2, 'rx')
 
@@ -456,6 +517,8 @@ def graficarG():
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarH():  # hecho
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -485,6 +548,8 @@ def graficarH():  # hecho
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
+
+
 def graficarI():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -511,13 +576,13 @@ def graficarI():
     y3 = float(cad3[cad3.find(",") + 1:len(cad3)])
     mx = float((x1 + x2) / 2)
     my = float((y1 + y2) / 2)
-    pendiente1 = float(-1/((y1 - y2)/(x1 - x2)))
+    pendiente1 = float(-1 / ((y1 - y2) / (x1 - x2)))
     mx2 = float((x1 + x3) / 2)
     my2 = float((y1 + y3) / 2)
-    pendiente2 = float(-1/((y1 - y3) / (x1 - x3)))
+    pendiente2 = float(-1 / ((y1 - y3) / (x1 - x3)))
     a = float(-pendiente1)
     b = 1
-    c = float(pendiente1*mx-my)
+    c = float(pendiente1 * mx - my)
     x = []
     y = []
     for i in range(-720, 720):
@@ -557,7 +622,9 @@ def graficarI():
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
-def graficarJ():    # semihecho
+
+
+def graficarJ():  # semihecho
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -578,22 +645,24 @@ def graficarJ():    # semihecho
     x = []
     y = []
     for i in range(-720, 720):
-        aux = i/10
+        aux = i / 10
         x.append(aux)
         y.append(-(a * (aux ** 2) + c) / b)
     plt.plot(x, y, 'g')  # parabola
-    plt.plot(0, (c/-b), 'rx')
-    plt.plot(0, (c/-b)+(-b/(4*a)), 'rx')
+    plt.plot(0, (c / -b), 'rx')
+    plt.plot(0, (c / -b) + (-b / (4 * a)), 'rx')
     # 3x2 + 5y + 1 = 0
-    focoOrd = float((c/-b)+(-b/(4*a)))
-    parametro = float(-b/a)
+    focoOrd = float((c / -b) + (-b / (4 * a)))
+    parametro = float(-b / a)
     plt.xlim(parametro, -parametro)
     plt.ylim(focoOrd + parametro, focoOrd - parametro)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
-def graficarK():    # semihecho
+
+
+def graficarK():  # semihecho
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -615,7 +684,7 @@ def graficarK():    # semihecho
     x = []
     y = []
     for i in range(-720, 720):
-        aux = i/10
+        aux = i / 10
         x.append(aux)
         y.append(-(a * (aux ** 2) + c) / b)
     plt.plot(x, y, 'g')  # parabola
@@ -636,15 +705,17 @@ def graficarK():    # semihecho
 
     #   plt.plot(0, (c/b), 'rx')
     # 3x2 + 5y + 1 = 0
-    focoOrd = (c/b)+(b/(4*a))
+    focoOrd = (c / b) + (b / (4 * a))
     d = ((0 - x2) ** 2 + (focoOrd - y2) ** 2) ** 1 / 2
-    plt.xlim(-(d*2), (d*2))
-    plt.ylim(focoOrd - d*2, focoOrd + (d*2))
+    plt.xlim(-(d * 2), (d * 2))
+    plt.ylim(focoOrd - d * 2, focoOrd + (d * 2))
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
-def graficarL():    # semihecho
+
+
+def graficarL():  # semihecho
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -668,13 +739,13 @@ def graficarL():    # semihecho
         y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
         plt.plot(x1, y1, 'rx')
     elif cad1.count("x2") != 0 and cad1.count("y2") != 0:
-        cad1 = cad1[cad1.find("y2")+2:len(cad1)]
+        cad1 = cad1[cad1.find("y2") + 2:len(cad1)]
         a = float(cad1[0:cad1.find("x")])
         b = float(cad1[cad1.find("x") + 1:cad1.find("y")])
         c = float(cad1[cad1.find("y") + 1:cad1.find("=")])
-        h = float(-a/2)
-        k = float(-b/2)
-        ratio = float(((a**2+b**2-4*c)**(1/2))/2)
+        h = float(-a / 2)
+        k = float(-b / 2)
+        ratio = float(((a ** 2 + b ** 2 - 4 * c) ** (1 / 2)) / 2)
         x = []
         y = []
         for c in range(0, 720):
@@ -778,6 +849,8 @@ def save():
                 str(int(time() / 60 / 60 % 24) - 3) + "+" + str(int(time() / 60 % 60)) + "+" + str(int(time() % 60)))
     fig.savefig("figure" + image + ".jpg")
     guardar.grid_remove()
+
+
 def clean():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
@@ -813,6 +886,8 @@ def menuA():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuB():
     menuClear()
     mensaje1.configure(text="Ingrese el primer punto: ")
@@ -832,6 +907,8 @@ def menuB():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuC():
     menuClear()
     mensaje1.configure(text="Ingrese la ecuacion de la recta: ")
@@ -852,6 +929,8 @@ def menuC():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuD():
     menuClear()
     mensaje1.configure(text="Ingrese el punto: ")
@@ -872,6 +951,8 @@ def menuD():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuE():
     menuClear()
     mensaje1.configure(text="Ingrese el primer punto: ")
@@ -892,6 +973,8 @@ def menuE():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuF():
     menuClear()
     mensaje1.configure(text="Ingrese la ecuacion de la recta: ")
@@ -912,6 +995,8 @@ def menuF():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuG():
     menuClear()
     mensaje1.configure(text="Ingrese la ecuacion de la recta: ")
@@ -932,6 +1017,8 @@ def menuG():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuH():
     menuClear()
     mensaje1.configure(text="Ingrese el centro de la circunferencia: ")
@@ -951,6 +1038,8 @@ def menuH():
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuI():
     menuClear()
     mensaje1.configure(text="Ingrese el primer punto: ")
@@ -976,6 +1065,8 @@ def menuI():
     plt.ylim(-10, 10)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuJ():
     menuClear()
     mensaje1.configure(text="Ingrese la ecuacion de la parabola: ")
@@ -995,6 +1086,8 @@ def menuJ():
     plt.ylim(-10, 10)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuK():
     menuClear()
     mensaje1.configure(text="Ingrese la ecuacion de la parabola: ")
@@ -1017,6 +1110,8 @@ def menuK():
     plt.ylim(-10, 10)
     plt.grid(True)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
+
+
 def menuL():
     menuClear()
     mensaje1.configure(text="Ingrese la primera ecuacion: ")
