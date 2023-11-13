@@ -341,7 +341,7 @@ def graficarD():
     cad1 = entrada1.get()
     cad2 = entrada2.get()
 
-    #Elimina espacios en blanco
+    # Elimina espacios en blanco
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
@@ -380,7 +380,7 @@ def graficarE():
     cad1 = entrada1.get()
     cad2 = entrada2.get()
 
-    #Elimina los espacios en blanco
+    # Elimina los espacios en blanco
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
@@ -421,7 +421,7 @@ def graficarF():
     cad1 = entrada1.get()  # recta
     cad2 = entrada2.get()  # punto
 
-    #Elimina espacios y signos
+    # Elimina espacios y signos
     if cad1.count("+") != 0:
         cad1 = cad1.replace("+", "")
     if cad1.count(" ") != 0:
@@ -445,7 +445,8 @@ def graficarF():
 
     punto = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
 
-    distancia = float((abs(punto.x * recta.a + punto.y * recta.b + recta.c)) / ((recta.a ** 2 + recta.b ** 2) ** (1 / 2)))
+    distancia = float(
+        (abs(punto.x * recta.a + punto.y * recta.b + recta.c)) / ((recta.a ** 2 + recta.b ** 2) ** (1 / 2)))
     plt.plot(punto.x, punto.y, 'rx')
 
     x = []
@@ -463,7 +464,7 @@ def graficarF():
     canvas.draw()
 
 
-def graficarG():
+def graficarG():  # No grafica correctamente
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -475,7 +476,7 @@ def graficarG():
     cad1 = entrada1.get()  # recta
     cad2 = entrada2.get()  # punto
 
-    #Elimina espacios y signos
+    # Elimina espacios y signos
     if cad1.count("+") != 0:
         cad1 = cad1.replace("+", "")
     if cad1.count(" ") != 0:
@@ -505,19 +506,20 @@ def graficarG():
 
     x = []
     y = []
-    m = (recta.b/recta.a)
+
+    m = (recta.b / recta.a)
+
     for i in range(-720, 720):
         x.append(i)
         y.append((m * i) - (m * punto.x) + punto.y)
     plt.plot(x, y, 'g')  # recta
 
-    # 3x+4y+5=0
     plt.xlim((punto.x - (distancia * 6)) - (0.9 * distancia), (punto.x + (distancia * 6) + (0.5 * distancia)))
     plt.ylim(punto.y - (distancia * 6), punto.y + (distancia * 6))  # mejor
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
-    canvas.draw()
+    canvas.draw()  # d
 
 
 def graficarH():  # hecho
