@@ -12,6 +12,7 @@ from Codigo.Clases.Punto import Punto
 from Codigo.Clases.Recta import Recta
 from Codigo.Funciones.Punto_Medio import PuntoMedio
 from Codigo.Funciones.Distancia_entre_A_y_B import distanciaAB
+from Codigo.Funciones.Distancia_Punto_a_Recta import DistanciaPuntoRecta
 
 ventana = Tk()
 ventana.title("GeoAlgebra")
@@ -491,7 +492,7 @@ def graficarG():
 
     for i in range(-720, 720):
         x.append(i)
-        y.append(-(a * i + c) / b)
+        y.append(-(recta.a * i + recta.c) / recta.b)
     plt.plot(x, y, 'g')  # recta
 
     if cad2.count(" ") != 0:
@@ -499,20 +500,20 @@ def graficarG():
 
     punto = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
 
-    distancia = float((abs(x2 * a + y2 * b + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
-    plt.plot(x2, y2, 'rx')
+    distancia = DistanciaPuntoRecta(recta, punto)
+    plt.plot(punto.x, punto.y, 'rx')
 
     x = []
     y = []
-    m = float(b / a)
+    m = (recta.b/recta.a)
     for i in range(-720, 720):
         x.append(i)
-        y.append((m * i) - (m * x2) + y2)
+        y.append((m * i) - (m * punto.x) + punto.y)
     plt.plot(x, y, 'g')  # recta
 
     # 3x+4y+5=0
-    plt.xlim((x2 - (distancia * 6)) - (0.9 * distancia), (x2 + (distancia * 6) + (0.5 * distancia)))
-    plt.ylim(y2 - (distancia * 6), y2 + (distancia * 6))  # mejor
+    plt.xlim((punto.x - (distancia * 6)) - (0.9 * distancia), (punto.x + (distancia * 6) + (0.5 * distancia)))
+    plt.ylim(punto.y - (distancia * 6), punto.y + (distancia * 6))  # mejor
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
