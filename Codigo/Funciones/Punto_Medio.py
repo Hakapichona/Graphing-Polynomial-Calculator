@@ -12,7 +12,8 @@ def PuntoMedio(puntoA: Punto, puntoB: Punto):
     if Y_del_punto_medio % 1 == 0:
         Y_del_punto_medio = int(Y_del_punto_medio)
 
-    return f"({X_del_punto_medio}, {Y_del_punto_medio})"
+    return Punto(X_del_punto_medio, Y_del_punto_medio)
 
 
-print(PuntoMedio(Punto(3, 8), Punto(2, 2)))
+# Ejemplo
+# print(PuntoMedio(Punto(3, 8), Punto(2, 2)))
