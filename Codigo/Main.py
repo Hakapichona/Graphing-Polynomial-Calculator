@@ -222,7 +222,7 @@ def graficarA():
     plt.plot(x, y, 'rx')
     plt.xlim(punto_medio.x - d, punto_medio.x + d)
     plt.ylim(punto_medio.y - d, punto_medio.y + d)
-    mensajeResultado.configure(text="Punto Medio: ("+str(punto_medio.x)+", "+str(punto_medio.y)+")")
+    mensajeResultado.configure(text="Punto Medio: " + str(punto_medio))
     mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
