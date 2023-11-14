@@ -10,10 +10,23 @@ def RectaParalela(Recta: Recta, Punto: Punto):
         terminoIndependiente = (Recta.b * Punto.y) + (Recta.a * Punto.x)
 
         if terminoIndependiente < 0:
-            return f"{Recta.b}y{Recta.a}x-{abs(terminoIndependiente)}=0"
-
+            if Recta.a > 0 and Recta.b > 0:
+                return f"{Recta.a}x+{Recta.b}y-{abs(terminoIndependiente)}=0"
+            elif Recta.a < 0 and Recta.b > 0:
+                return f"{abs(Recta.a)}x-{Recta.b}y+{abs(terminoIndependiente)}=0"
+            elif Recta.a > 0 and Recta.b < 0:
+                return f"{Recta.a}x-{abs(Recta.b)}y-{abs(terminoIndependiente)}=0"
+            else:
+                return f"{abs(Recta.a)}x+{abs(Recta.b)}y+{abs(terminoIndependiente)}=0"
         elif terminoIndependiente > 0:
-            return f"{Recta.b}y{Recta.a}x+{abs(terminoIndependiente)}=0"
+            if Recta.a > 0 and Recta.b > 0:
+                return f"{Recta.a}x+{Recta.b}y+{abs(terminoIndependiente)}=0"
+            elif Recta.a < 0 and Recta.b > 0:
+                return f"{abs(Recta.a)}x-{Recta.b}y-{abs(terminoIndependiente)}=0"
+            elif Recta.a > 0 and Recta.b < 0:
+                return f"{Recta.a}x-{abs(Recta.b)}y+{abs(terminoIndependiente)}=0"
+            else:
+                return f"{abs(Recta.a)}x+{abs(Recta.b)}y-{abs(terminoIndependiente)}=0"
         else:
             return f"y{-pendiente}x=0"
 
@@ -22,9 +35,23 @@ def RectaParalela(Recta: Recta, Punto: Punto):
         terminoIndependiente = (Recta.b * Punto.y) - (Recta.a * Punto.x)
 
         if terminoIndependiente < 0:
-            return f"{Recta.a}x+{Recta.b}y-{abs(terminoIndependiente)}=0"
+            if Recta.a > 0 and Recta.b > 0:
+                return f"{Recta.a}x+{Recta.b}y-{abs(terminoIndependiente)}=0"
+            elif Recta.a < 0 and Recta.b > 0:
+                return f"{abs(Recta.a)}x-{Recta.b}y+{abs(terminoIndependiente)}=0"
+            elif Recta.a > 0 and Recta.b < 0:
+                return f"{Recta.a}x-{abs(Recta.b)}y-{abs(terminoIndependiente)}=0"
+            else:
+                return f"{abs(Recta.a)}x+{abs(Recta.b)}y+{abs(terminoIndependiente)}=0"
         elif terminoIndependiente > 0:
-            return f"{Recta.a}x+{Recta.b}y+{abs(terminoIndependiente)}=0"
+            if Recta.a > 0 and Recta.b > 0:
+                return f"{Recta.a}x+{Recta.b}y+{abs(terminoIndependiente)}=0"
+            elif Recta.a < 0 and Recta.b > 0:
+                return f"{abs(Recta.a)}x-{Recta.b}y-{abs(terminoIndependiente)}=0"
+            elif Recta.a > 0 and Recta.b < 0:
+                return f"{Recta.a}x-{abs(Recta.b)}y+{abs(terminoIndependiente)}=0"
+            else:
+                return f"{abs(Recta.a)}x+{abs(Recta.b)}y-{abs(terminoIndependiente)}=0"
         else:
             return f"{Recta.a}x+{Recta.b}y=0"
 
