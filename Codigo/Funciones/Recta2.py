@@ -4,6 +4,11 @@ from Codigo.Clases.Punto import Punto
 def Recta2(PuntoA: Punto, Pendinte: float):
     terminoIndependiente = PuntoA.x * Pendinte - PuntoA.y
 
+    if terminoIndependiente % 1 == 0:
+        terminoIndependiente = int(terminoIndependiente)
+    else:
+        terminoIndependiente = round(terminoIndependiente, 2)
+
     if Pendinte == 0:
         if PuntoA.y == 0:
             return f"y=0"
@@ -21,10 +26,10 @@ def Recta2(PuntoA: Punto, Pendinte: float):
                 return f"x+y=0"
 
         if terminoIndependiente < 0:
-            return f"{-1*-Pendinte}x-y+{abs(terminoIndependiente)}=0"
+            return f"{-1 * -Pendinte}x-y+{abs(terminoIndependiente)}=0"
 
         elif terminoIndependiente > 0:
-            return f"{-1*-Pendinte}x-y-{abs(terminoIndependiente)}=0"
+            return f"{-1 * -Pendinte}x-y-{abs(terminoIndependiente)}=0"
         else:
             return f"{-Pendinte}x+y=0"
 
@@ -36,9 +41,8 @@ def Recta2(PuntoA: Punto, Pendinte: float):
         else:
             return f"{-Pendinte}x+y=0"
 
-
 # Ejemplo
 
-miRecta = Recta2(Punto(-3, 9), 1)
+# miRecta = Recta2(Punto(-3, 9), 1)
 
-print(miRecta)
+# print(miRecta)

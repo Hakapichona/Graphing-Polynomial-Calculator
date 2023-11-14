@@ -14,6 +14,5 @@ class Parabola:
 
 
 # Ejemplo
-parabola1 = Parabola(-2, 6, -2)
-
-print(parabola1)
+#parabola1 = Parabola(-2, 6, -2)
+#print(parabola1)

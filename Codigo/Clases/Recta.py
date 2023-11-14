@@ -16,7 +16,7 @@ class Recta:
         pendiente = -(self.a / self.b)
         if pendiente % 1 == 0:
             return int(pendiente)
-        return pendiente
+        return round(pendiente, 2)
 
 # Ejemplo
 # recta1 = Recta(4, 1, 8)

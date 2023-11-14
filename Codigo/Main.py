@@ -13,6 +13,11 @@ from Codigo.Clases.Recta import Recta
 from Codigo.Funciones.Punto_Medio import PuntoMedio
 from Codigo.Funciones.Distancia_entre_A_y_B import distanciaAB
 from Codigo.Funciones.Distancia_Punto_a_Recta import DistanciaPuntoRecta
+from Codigo.Clases.Circunferencia import CircunferenciaCompleta, CircunferenciaReducida
+from Codigo.Funciones.Pendiente_de_dos_puntos import Pendiente
+from Codigo.Funciones.Recta2 import Recta2
+from Codigo.Funciones.Recta1 import Recta1
+
 
 ventana = Tk()
 ventana.title("GeoAlgebra")
@@ -89,6 +94,7 @@ def menuPrincipal():
     graficar.grid_remove()
     limpiar.grid_remove()
     guardar.grid_remove()
+    mensajeResultado.grid_remove()
     mensaje1.grid_remove()
     mensaje2.grid_remove()
     mensaje3.grid_remove()
@@ -216,6 +222,8 @@ def graficarA():
     plt.plot(x, y, 'rx')
     plt.xlim(punto_medio.x - d, punto_medio.x + d)
     plt.ylim(punto_medio.y - d, punto_medio.y + d)
+    mensajeResultado.configure(text="Punto Medio: ("+str(punto_medio.x)+", "+str(punto_medio.y)+")")
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -262,6 +270,8 @@ def graficarB():
     plt.plot(Punto2.x, Punto2.y, 'rx')
     plt.xlim(punto_medio.x - d, punto_medio.x + d)
     plt.ylim(punto_medio.y - d, punto_medio.y + d)
+    mensajeResultado.configure(text="Distancia: " + str(d))
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -310,9 +320,7 @@ def graficarC():  # Problemas pendientes
     y = []
 
     angulo = float(atan(recta.b / recta.a))
-    distancia = float(
-        (abs(punto.x * recta.a + punto.y * recta.b + recta.c)) / ((recta.a ** 2 + recta.b ** 2) ** (1 / 2))
-    )
+    distancia = DistanciaPuntoRecta(recta, punto)
 
     px = float(punto.x + (cos(angulo) * distancia))
     py = float(punto.y + (sin(angulo) * distancia))
@@ -323,6 +331,8 @@ def graficarC():  # Problemas pendientes
     plt.plot(punto.x, punto.y, 'rx')
     plt.xlim((punto.x - (distancia * 6)) - (0.9 * distancia), (punto.x + (distancia * 6) + (0.5 * distancia)))
     plt.ylim(punto.y - (distancia * 6), punto.y + (distancia * 6))  # mejor
+    mensajeResultado.configure(text="Distancia: " + str(distancia))
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -353,6 +363,8 @@ def graficarD():
     y = []
     m = float(cad2)
 
+    recta = Recta2(punto, m)
+
     for i in range(-720, 720):
         x.append(i)
         y.append((m * i) - (m * punto.x) + punto.y)
@@ -362,6 +374,8 @@ def graficarD():
     plt.plot(punto.x, punto.y, 'rx')
     plt.xlim(punto.x - d1, punto.x + d1)
     plt.ylim(punto.y - d1, punto.y + d1)
+    mensajeResultado.configure(text="Ecuacion de la recta: " + recta)
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -393,7 +407,12 @@ def graficarE():
     y = []
 
     puntoMedio = PuntoMedio(punto1, punto2)
-    m = (punto1.y - punto2.y) / (punto1.x - punto2.x)
+    m = (punto2.y - punto1.y) / (punto2.x - punto1.x)
+
+    recta = Recta1(punto1, punto2)
+
+    print(int(m))#Prueba
+
     for i in range(-720, 720):
         x.append(i)
         y.append((m * i) - (m * punto1.x) + punto1.y)
@@ -403,6 +422,8 @@ def graficarE():
     plt.plot(punto2.x, punto2.y, 'rx')
     plt.xlim(puntoMedio.x - d, puntoMedio.x + d)
     plt.ylim(puntoMedio.y - d, puntoMedio.y + d)
+    mensajeResultado.configure(text="Ecuacion de la recta: " + recta)
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -449,6 +470,8 @@ def graficarF():
         (abs(punto.x * recta.a + punto.y * recta.b + recta.c)) / ((recta.a ** 2 + recta.b ** 2) ** (1 / 2)))
     plt.plot(punto.x, punto.y, 'rx')
 
+    paralela = Recta2(punto, recta.Pendiente())
+
     x = []
     y = []
     for i in range(-720, 720):
@@ -458,13 +481,15 @@ def graficarF():
 
     plt.xlim(punto.x - (distancia * 8), punto.x + (distancia * 8))
     plt.ylim(punto.y - (distancia * 8), punto.y + (distancia * 8))
+    mensajeResultado.configure(text="Ecuacion de la recta: " + paralela)
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
 
 
-def graficarG():  # No grafica correctamente
+def graficarG():
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -503,6 +528,8 @@ def graficarG():  # No grafica correctamente
 
     distancia = DistanciaPuntoRecta(recta, punto)
     plt.plot(punto.x, punto.y, 'rx')
+    m = recta.b / recta.a
+    perpendicular = Recta2(punto, m)
 
     x = []
     y = []
@@ -516,6 +543,8 @@ def graficarG():  # No grafica correctamente
 
     plt.xlim((punto.x - (distancia * 6)) - (0.9 * distancia), (punto.x + (distancia * 6) + (0.5 * distancia)))
     plt.ylim(punto.y - (distancia * 6), punto.y + (distancia * 6))  # mejor
+    mensajeResultado.configure(text="Ecuacion de la recta: " + perpendicular)
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -531,22 +560,31 @@ def graficarH():  # hecho
     ax.set_ylabel("Eje  Vertical", color='white')
     ax.tick_params(direction='out', length=6, width=2, colors='white', grid_color='white', grid_alpha=0.2)
     plt.grid(True)
-    cad = entrada1.get()
-    ec = cad
+    ec = entrada1.get()
     cad2 = entrada2.get()
-    h = float(ec[0:ec.find(",")])
-    k = float(ec[ec.find(",") + 1:len(ec)])
-    ratio = int(cad2)
+
+    # Elimina los espacios en blanco
+    if ec.count(" ") != 0:
+        ec.replace(" ", "")
+    if cad2.count(" ") != 0:
+        cad2.replace(" ", "")
+
+    cia = CircunferenciaReducida(float(ec[0:ec.find(",")]), float(ec[ec.find(",") + 1:len(ec)]), int(cad2))
+
     x = []
     y = []
+
     for c in range(0, 720):
         count = c * 0.5
-        x.append(h + ratio * sin(count))
-        y.append(k + ratio * cos(count))
-    plt.xlim((h - (ratio * 2)) - (0.9 * ratio), (h + (ratio * 2) + (0.5 * ratio)))
-    plt.ylim(k - (ratio * 2), k + (ratio * 2))
+        x.append(cia.h + cia.r * sin(count))
+        y.append(cia.k + cia.r * cos(count))
+
+    plt.xlim((cia.h - (cia.r * 2)) - (0.9 * cia.r), (cia.h + (cia.r * 2) + (0.5 * cia.r)))
+    plt.ylim(cia.k - (cia.r * 2), cia.k + (cia.r * 2))
     plt.plot(x, y, 'go')
-    plt.plot(h, k, 'rx')
+    plt.plot(cia.h, cia.k, 'rx')
+    mensajeResultado.configure(text="Ecuacion de la circunferencia: " + cia.__str__())
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -565,50 +603,59 @@ def graficarI():
     cad1 = entrada1.get()
     cad2 = entrada2.get()
     cad3 = entrada3.get()
+
+    #Elimina los espacios en blanco
     if cad1.count(" ") != 0:
         cad1.replace(" ", "")
     if cad2.count(" ") != 0:
         cad2.replace(" ", "")
     if cad3.count(" ") != 0:
         cad3.replace(" ", "")
-    x1 = float(cad1[0:cad1.find(",")])
-    y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
-    x2 = float(cad2[0:cad2.find(",")])
-    y2 = float(cad2[cad2.find(",") + 1:len(cad2)])
-    x3 = float(cad3[0:cad3.find(",")])
-    y3 = float(cad3[cad3.find(",") + 1:len(cad3)])
-    mx = float((x1 + x2) / 2)
-    my = float((y1 + y2) / 2)
-    pendiente1 = float(-1 / ((y1 - y2) / (x1 - x2)))
-    mx2 = float((x1 + x3) / 2)
-    my2 = float((y1 + y3) / 2)
-    pendiente2 = float(-1 / ((y1 - y3) / (x1 - x3)))
-    a = float(-pendiente1)
+
+    puntoA = Punto(float(cad1[0:cad1.find(",")]), float(cad1[cad1.find(",") + 1:len(cad1)]))
+    puntoB = Punto(float(cad2[0:cad2.find(",")]), float(cad2[cad2.find(",") + 1:len(cad2)]))
+    puntoC = Punto(float(cad3[0:cad3.find(",")]), float(cad3[cad3.find(",") + 1:len(cad3)]))
+
+    puntoMedioAB = PuntoMedio(puntoA, puntoB)
+    pendienteAB = (-1/round(Pendiente(puntoA, puntoB), 2))
+
+    puntoMedioAC = PuntoMedio(puntoA, puntoC)
+    pendienteAC = (-1/round(Pendiente(puntoA, puntoC), 2))
+
+    puntoMedioBC = PuntoMedio(puntoB, puntoC)
+    pendienteBC = (-1/round(Pendiente(puntoB, puntoC), 2))
+
+    a = float(-pendienteAB)
     b = 1
-    c = float(pendiente1 * mx - my)
+    c = float(pendienteAB*puntoMedioAB.x-puntoMedioAB.y)
     x = []
     y = []
     for i in range(-720, 720):
         x.append(i)
-        y.append(pendiente1 * (i - mx) + my)
-    # plt.plot(x, y, 'g')
+        y.append(pendienteAB * (i - puntoMedioAB.x) + puntoMedioAB.y)
+    plt.plot(x, y, 'g')
+    for i in range(-720, 720):
+        x.append(i)
+        y.append(pendienteBC * (i - puntoMedioBC.x) + puntoMedioBC.y)
+    plt.plot(x, y, 'g')
     x = []
     y = []
     i = -720
-    distMin = float((abs(i * a + ((pendiente2 * (i - mx2) + my2) * b) + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
+    distMin = float((abs(i * a + ((pendienteAC * (i - puntoMedioAC.x) + puntoMedioAC.y) * b) + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
     h = i
-    k = float(pendiente2 * (i - mx2) + my2)
-    for i in range(-720, 720):
+    k = float(pendienteAC * (i - puntoMedioAC.x) + puntoMedioAC.y)
+    for z in range(-7200, 7200):
+        i = float(z/100)
         x.append(i)
-        y.append(pendiente2 * (i - mx2) + my2)
-        distancia = float((abs(i * a + ((pendiente2 * (i - mx2) + my2) * b) + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
+        y.append(pendienteAC * (i - puntoMedioAC.x) + puntoMedioAC.y)
+        distancia = float((abs(i * a + ((pendienteAC * (i - puntoMedioAC.x) + puntoMedioAC.y) * b) + c)) / ((a ** 2 + b ** 2) ** (1 / 2)))
         if distancia < distMin:
             distMin = distancia
             h = float(i)
-            k = float(pendiente2 * (i - mx2) + my2)
-    ratio = ((h - x2) ** 2 + (k - y2) ** 2) ** (1 / 2)
+            k = float(pendienteAC * (i - puntoMedioAC.x) + puntoMedioAC.y)
+    ratio = ((h - puntoB.x) ** 2 + (k - puntoB.y) ** 2) ** (1 / 2)
     plt.plot(h, k, 'rx')
-    # plt.plot(x, y, 'g')
+    plt.plot(x, y, 'g')
     x = []
     y = []
     for c in range(0, 720):
@@ -618,16 +665,19 @@ def graficarI():
     plt.xlim((h - (ratio * 2)) - (0.9 * ratio), (h + (ratio * 2) + (0.5 * ratio)))
     plt.ylim(k - (ratio * 2), k + (ratio * 2))
     plt.plot(x, y, 'g:')
-    plt.plot(x1, y1, 'rx')
-    plt.plot(x2, y2, 'rx')
-    plt.plot(x3, y3, 'rx')
+    plt.plot(puntoA.x, puntoA.y, 'rx')
+    plt.plot(puntoB.x, puntoB.y, 'rx')
+    plt.plot(puntoC.x, puntoC.y, 'rx')
+    mensajeResultado.configure(text="Ecuacion de la circunferencia: " + "x2 " + "+ y2 +" + str(-h * 2) + "x " + \
+            str(-k * 2) + "y +" + str(h ** 2 + k ** 2 - ratio ** 2) + " = 0")
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
 
 
-def graficarJ():  # semihecho
+def graficarJ():    # semihecho
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -648,24 +698,26 @@ def graficarJ():  # semihecho
     x = []
     y = []
     for i in range(-720, 720):
-        aux = i / 10
+        aux = i/10
         x.append(aux)
         y.append(-(a * (aux ** 2) + c) / b)
     plt.plot(x, y, 'g')  # parabola
-    plt.plot(0, (c / -b), 'rx')
-    plt.plot(0, (c / -b) + (-b / (4 * a)), 'rx')
+    plt.plot(0, (c/-b), 'rx')
+    plt.plot(0, (c/-b)+(-b/(4*a)), 'rx')
     # 3x2 + 5y + 1 = 0
-    focoOrd = float((c / -b) + (-b / (4 * a)))
-    parametro = float(-b / a)
+    focoOrd = float((c/-b)+(-b/(4*a)))
+    parametro = float(-b/a)
     plt.xlim(parametro, -parametro)
     plt.ylim(focoOrd + parametro, focoOrd - parametro)
+    mensajeResultado.configure(text="Foco: (" + str(0) + ", " + str(focoOrd) + ")")
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
 
 
-def graficarK():  # semihecho
+def graficarK():    # inc
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -687,7 +739,7 @@ def graficarK():  # semihecho
     x = []
     y = []
     for i in range(-720, 720):
-        aux = i / 10
+        aux = i/10
         x.append(aux)
         y.append(-(a * (aux ** 2) + c) / b)
     plt.plot(x, y, 'g')  # parabola
@@ -708,17 +760,19 @@ def graficarK():  # semihecho
 
     #   plt.plot(0, (c/b), 'rx')
     # 3x2 + 5y + 1 = 0
-    focoOrd = (c / b) + (b / (4 * a))
+    focoOrd = (c/b)+(b/(4*a))
     d = ((0 - x2) ** 2 + (focoOrd - y2) ** 2) ** 1 / 2
-    plt.xlim(-(d * 2), (d * 2))
-    plt.ylim(focoOrd - d * 2, focoOrd + (d * 2))
+    plt.xlim(-(d*2), (d*2))
+    plt.ylim(focoOrd - d*2, focoOrd + (d*2))
+    mensajeResultado.configure(text="Resultado: ")
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
     canvas.draw()
 
 
-def graficarL():  # semihecho
+def graficarL():    # inc
     canvas.get_tk_widget().grid_remove()
     ax.clear()
     ax.axhline(linewidth=1, color='white')
@@ -742,13 +796,13 @@ def graficarL():  # semihecho
         y1 = float(cad1[cad1.find(",") + 1:len(cad1)])
         plt.plot(x1, y1, 'rx')
     elif cad1.count("x2") != 0 and cad1.count("y2") != 0:
-        cad1 = cad1[cad1.find("y2") + 2:len(cad1)]
+        cad1 = cad1[cad1.find("y2")+2:len(cad1)]
         a = float(cad1[0:cad1.find("x")])
         b = float(cad1[cad1.find("x") + 1:cad1.find("y")])
         c = float(cad1[cad1.find("y") + 1:cad1.find("=")])
-        h = float(-a / 2)
-        k = float(-b / 2)
-        ratio = float(((a ** 2 + b ** 2 - 4 * c) ** (1 / 2)) / 2)
+        h = float(-a/2)
+        k = float(-b/2)
+        ratio = float(((a**2+b**2-4*c)**(1/2))/2)
         x = []
         y = []
         for c in range(0, 720):
@@ -841,6 +895,8 @@ def graficarL():  # semihecho
             x.append(i)
             y.append(-(a * i + c) / b)
         plt.plot(x, y, 'g')
+    mensajeResultado.configure(text="Resultado: ")
+    mensajeResultado.grid(column=4, row=5, padx=5, pady=5)
     canvas.get_tk_widget().grid(column=4, row=6, padx=5, pady=5)
     guardar.grid(column=4, row=7, padx=5, pady=5)
     limpiar.grid(column=4, row=8, padx=5, pady=5)
@@ -867,6 +923,7 @@ def clean():
     canvas.draw()
     limpiar.grid_remove()
     guardar.grid_remove()
+    mensajeResultado.grid_remove()
 
 
 def menuA():
@@ -1168,21 +1225,23 @@ guardar = Button(ventana, text="Guardar ", fg="green", bg="black", font=12, comm
 limpiar = Button(ventana, text="Limpiar ", fg="green", bg="black", font=12, command=clean)
 aumento = Button(ventana, text=" + ", fg="green", bg="black", font=12, command=clean)
 decremento = Button(ventana, text=" - ", fg="green", bg="black", font=12, command=clean)
+mensajeResultado = Label(ventana, fg="green", bg="black", font=12)
+mostrarResultado = Label(ventana, fg="green", bg="black", font=12)
 
 menuPrincipal()
 
 ventana.mainloop()
 
 """
-A   hecho
-B   hecho
-C   semihecho
-D   hecho
-E   hecho
-F   hecho
-G   hecho
-H   hecho
-I   hecho
+A   integrado
+B   integrado
+C   integrado
+D   integrado
+E   integrado
+F   integrado
+G   integrado
+H   integrado
+I   semi integrado 
 J   semihecho
 K   semihecho
 L   semihecho
