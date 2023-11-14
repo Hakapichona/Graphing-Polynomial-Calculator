@@ -570,6 +570,7 @@ def graficarH():  # hecho
         cad2.replace(" ", "")
 
     cia = CircunferenciaReducida(float(ec[0:ec.find(",")]), float(ec[ec.find(",") + 1:len(ec)]), int(cad2))
+    print(cia.h, cia.k)
 
     x = []
     y = []
@@ -761,7 +762,7 @@ def graficarK():    # inc
     #   plt.plot(0, (c/b), 'rx')
     # 3x2 + 5y + 1 = 0
     focoOrd = (c/b)+(b/(4*a))
-    d = ((0 - x2) ** 2 + (focoOrd - y2) ** 2) ** 1 / 2
+    d = (((0 - x2) ** 2 + (focoOrd - y2) ** 2)) ** (1 / 2)
     plt.xlim(-(d*2), (d*2))
     plt.ylim(focoOrd - d*2, focoOrd + (d*2))
     mensajeResultado.configure(text="Resultado: ")

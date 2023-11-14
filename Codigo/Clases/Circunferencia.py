@@ -36,13 +36,13 @@ class CircunferenciaReducida:
 
 
         if self.h > 0 and self.k > 0:
-            return f"(x+{self.h})²+(y+{self.k})²={self.r}²"
+            return f"(x{-self.h})²+(y{-self.k})²={self.r}²"
         elif self.h < 0 and self.k < 0:
-            return f"(x{self.h})²+(y{self.k})²={self.r}²"
+            return f"(x+{abs(self.h)})²+(y+{abs(self.k)})²={self.r}²"
         elif self.h < 0 and self.k > 0:
-            return f"(x{self.h})²+(y+{self.k})²={self.r}²"
+            return f"(x+{abs(self.h)})²+(y{-self.k})²={self.r}²"
         elif self.h > 0 and self.k < 0:
-            return f"(x+{self.h})²+(y{self.k})²={self.r}²"
+            return f"(x{-self.h})²+(y+{abs(self.k)})²={self.r}²"
 
 
 
